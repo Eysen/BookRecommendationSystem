@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% load static %} {% block styles %}
+<link rel="stylesheet" href="{% static 'users/css/profile.css' %}" />
+{% endblock %} {% block content %}
+<div class="">
+  <div class="row">
+    <div class="col-xs-6 col-sm-6">
+      <h4>个人信息</h4>
+    </div>
+    {% if profile == user %}
+    <div class="col-xs-6 col-sm-6 float-right">
+      <div class="dropdown float-right">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenu2"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          设置
+        </button>
+        <ul
+          class="dropdown-menu dropdown-menu-right"
+          role="menu"
+          aria-labelledby="dropdownMenu2"
+        >
+          <li>
+            <a
+              href="{% url 'users:update_profile' profile.pk %}"
+              class="dropdown-item"
+              type="button"
+              >修改个人信息</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="well profile">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12">
+            <strong>头像:</strong>
+        <img style="height:200px;width: 200px;%" src="{{ MEDIA_URL }}{{ profile.profile_photo.url }}" alt="" class="img-circle img-responsive"/>
+
+{#    加url  http://127.0.0.1:8000/media/pic_folder/v2-b11bccc700cda67bcd29585393f872f4_r.jpg#}
+{#    不加url  http://127.0.0.1:8000/user/admin/pic_folder/v2-b11bccc700cda67bcd29585393f872f4_r.jpg#}
+        <div>
+            <h6 style="margin-top: 20px"><strong>姓名:</strong>{{ profile.first_name }} &nbsp; {{ profile.last_name }}</h6>
+        </div>
+        <p style="margin-top: 20px"><strong>个人简介:</strong>{{ profile.profile }}</p>
+        <p>
+            <strong>喜欢的书以及评分:</strong><br>
+            {% for i in all_rating_book %}
+                <div class="media" style="margin-left: 40px ">
+
+{#                  <a class="pull-left"  href="{% url 'book:book_detail' i.book_pk %}">#}
+{#                              {% for j in book_all_img %}#}
+{#                                  {% if i.book_pk == j.id %}#}
+{#                                    <img style="height:90px;width: 70px" src="{{ MEDIA_URL }}{{j.book_profile_photo.url }}" alt="" class=" img-responsive"/>#}
+{#                                  {% endif %}#}
+{#                              {% endfor %}#}
+{#                  </a>#}
+                  <div class="media-body">
+                    <h5 class="media-heading">书名:<a href="{% url 'book:book_detail' i.book_pk %}"> {{ i.book_name  }}</a> </h5>
+                    <p><span>评分: {{ i.rate_book_by_user }}</span></p>
+                  </div>
+                </div>
+            {% endfor %}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

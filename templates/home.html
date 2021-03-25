@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% block content %}
+
+    <h5 style="margin-bottom: 20px">新书速递</h5>
+    <div class="container">
+        <div class="row">
+                {% for foo in book_all %}
+                    {% if forloop.counter <= 8 %}
+                        <div class="col-sm-6 col-md-3" style="">
+                            <a class="thumbnail" href="{% url 'book:book_detail' foo.id %}">
+                              <img style="height:200px"  src="{{ MEDIA_URL }}{{ foo.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+                            </a>
+                                <p> 书名:{{ foo.book_name }}<br>作者:{{ foo.book_author }}</p>
+
+                        </div>
+                    {% endif %}
+                {% endfor %}
+        </div>
+    </div>
+    <hr />
+    <h5 style="margin-bottom: 10px">新书速递</h5>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <hr>
+                {% for foo in book_all %}
+                    {% if forloop.counter <= 4 %}
+                         <div class="media" style="margin-bottom: 15px;margin-top: 15px">
+                          <a class="pull-left"  href="{% url 'book:book_detail' foo.id %}">
+                             <img style="height:90px;width: 70px" src="{{ MEDIA_URL }}{{ foo.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+                          </a>
+                          <div class="media-body" style="margin-top: 20px;padding-top: 15px">
+                            <h5  style="margin-left: 20px" >{{ foo.book_name }}</h5>
+                            <h5 style="margin-left:20px" >Cras sit amet nibh lib</h5>
+                          </div>
+                        </div>
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+<hr>
+
+{% endblock %}

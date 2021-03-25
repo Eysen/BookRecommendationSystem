@@ -1,0 +1,238 @@
+{% load static %}{% load crispy_forms_tags %}
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>{% block title %}书籍推荐{% endblock %}</title>
+        <script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://labfile.oss.aliyuncs.com/courses/1379/font-awesome.min.css"/>
+      <link rel="stylesheet" type="text/css" href="{% static 'users/css/freelancers.css' %}"/>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}" />
+      <link rel="stylesheet" href="{% static 'users/css/profile.css' %}" />
+      <link rel="stylesheet"  href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+      <link href="{% static 'book/css/star-rating.css' %}" media="all" rel="stylesheet" type="text/css"/>
+      <script src="{% static 'book/js/star-rating.js' %}" type="text/javascript"></script>
+ <script>
+   jQuery(document).ready(function() {
+    var $inp = $('#rating-input');
+
+    $inp.rating({
+        min: 0,
+        max: 5,
+        step: 1,
+        size: 'xs', //lg xs xl 大小
+        readonly: false, //只读
+        showCaption: false, //不显示右边内容
+        showClear: false //清除按钮
+    });
+    $inp.rating("showStars", 0); //默认显示
+    $inp.on('rating.change', function() {
+    });
+
+});
+</script>
+    <style>
+        #book_img{
+            float: left;
+        }
+        #book_detail{
+            margin: 30px 50px 30px 30px;
+            float: left;
+        }
+    </style>
+    {% if user.is_authenticated and user.is_user %}
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/owners.css' %}"/>
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/freelancers.css' %}"/>
+    {% endif %} {% block styles %} {% endblock %}
+  </head>
+  <body>
+
+    <div class="container">
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'home' %}">书籍推荐</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+
+
+      <form class="navbar-form navbar-left" action="#">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+
+         {% if user.is_authenticated %}
+              <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+             <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }} <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'users:user_profile' user.username %}">Settings</a></li>
+                        <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                        </ul>
+                 </li>
+             </ul>
+            </div>
+
+        {% else %}
+             <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                <ul class="nav navbar-nav navbar-right">
+                   <li><a href="{% url 'users:login' %}" class="btn btn-default   float-right" role="button">
+                            Log in
+                        </a>
+                   </li>
+                    <li><a href="{% url 'users:signup' %}" class="btn btn-default  float-right" role="button">
+                            Sign up
+                        </a>
+                    </li>
+                </ul>
+          </div>
+        {% endif %}
+
+
+
+{#      <ul class="nav navbar-nav navbar-right">#}
+{#        <li><a href="#">Link</a></li>#}
+{#        <li class="dropdown">#}
+{#          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>#}
+{#          <ul class="dropdown-menu">#}
+{#            <li><a href="#">Action</a></li>#}
+{#            <li><a href="#">Another action</a></li>#}
+{#            <li><a href="#">Something else here</a></li>#}
+{#            <li role="separator" class="divider"></li>#}
+{#            <li><a href="#">Separated link</a></li>#}
+{#          </ul>#}
+{#        </li>#}
+{#      </ul>#}
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+</div>
+        <div class="container" style="margin-right: 150px;">
+          <div class="row jumbotron"  style="width: 1100px;height: 500px; align-content: center;">
+                <div class="col-md-3 col-md-offset-2" style="padding-top: 35px;padding-right: 20px;">
+                    <img style="height:300px" src="{{ MEDIA_URL }}{{ book_detail.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+                </div>
+
+                <div  class ="col-md-5" id="book_detail" >
+                            <p>
+                                <strong>书籍详情</strong><br>
+                                <span> 书名:{{ book_detail.book_name  }} </span><br>
+                                <span>{{ book_detail.book_author }}</span><br>
+                                <span>大众评分:{{book_detail.book_rating  }}分</span><br>
+                                <span>ISBM码:{{ book_detail.book_isbm }}</span><br>
+                                <span>出版时间:{{book_detail.pub_date }}</span><br>
+                                <span>{{ book_detail.press_information  }}</span>
+                            </p>
+                            {#<p><stron> 个人评分: {{ user.rate_book_by_user }} </stron></p>#}
+                            <p><strong> 评分:</strong></p>
+                            <form method="POST" action="" novalidate enctype="multipart/form-data" >
+                                {% csrf_token %}{{ form|crispy }}
+                                <input name = "rating" id="input-21e" value="0" type="text" class="rating rating-input clearfix" data-show-clear="false" data-show-caption="true" data-min="0" data-max="5" data-step="0.5" data-size="xs" title="">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <a href="#" class="btn btn-outline-secondary" role="button">Nevermind</a>
+                            </form>
+                </div>
+      </div>
+
+          <div class="container" id="book_reconment">
+                        <div class="well" style="width: 1100px;height: 30px;margin-left: -32px;">书籍推荐</div>
+{#              <div class="row jumbotron" style="width: 1100px;height: 300px; margin-left: -30px; margin-top: -50px">#}
+              <div class="row jumbotron" style="width: 1100px;height: 500px;margin-left: -30px; margin-top: -20px;">
+              <div class="col-sm-6 col-md-3" >
+                <div class="thumbnail" >
+                  <img style="height:250px ;width: 250px;" src="{{ MEDIA_URL }}{{ book_detail.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+                  <div class="caption">
+                    <h3>Thumbnail label</h3>
+                    <p>tuijian</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                  <img style="height:250px ;width: 250px;" src="{{ MEDIA_URL }}{{ book_detail.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+                  <div class="caption">
+                    <h3>Thumbnail label</h3>
+                    <p>tuijian</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                  <img style="height:250px ;width: 250px;" src="{{ MEDIA_URL }}{{ book_detail.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+                  <div class="caption">
+                    <h3>Thumbnail label</h3>
+                    <p>tuijian</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                  <img style="height:250px ;width: 250px;" src="{{ MEDIA_URL }}{{ book_detail.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+                  <div class="caption">
+                    <h3>Thumbnail label</h3>
+                    <p>tuijian</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+
+    <script
+      src="https://labfile.oss.aliyuncs.com/courses/1379/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+
+
+  </body>
+</html>
+
+
+

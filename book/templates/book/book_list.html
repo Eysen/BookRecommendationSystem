@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block content %}
+   {% for book_i in books %}
+<div class="card" style="padding: 10px">
+{#            <p>{{ user.is_authenticated }}</p><br>#}
+{#            <p>书名:<a href="{% url 'book:book_detail' i.id %}">{{ i.book_name }} </a><br>#}
+{#                {{ i.book_author }}<br>#}
+{#                大众评分:{{ i.book_rating }}<br>#}
+{#                出版时间: {{ i.pub_date }}<br>#}
+{#                ISBM码:{{ i.book_isbm }}<br>#}
+{#                {{ i.press_information }}<br>#}
+{#            </p>#}
+            <div class="media">
+              <a class="pull-left" style="margin-top: 20px" href="{% url 'book:book_detail' book_i.id %}">
+                   <img style="height:100px;width: 80px" src="{{ MEDIA_URL }}{{ book_i.book_profile_photo.url }}" alt="" class=" img-responsive"/>
+              </a>
+              <div class="media-body">
+                <p style="margin-left: 20px">书名:<a href="{% url 'book:book_detail' book_i.id %}">{{ book_i.book_name }} </a><br>
+                 作者:{{ book_i.book_author }}<br>
+                大众评分:{{ book_i.book_rating }}<br>
+                出版时间: {{ book_i.pub_date }}<br>
+                ISBM码:{{ book_i.book_isbm }}<br>
+                {{ book_i.press_information }}<br>
+            </p>
+              </div>
+            </div>
+</div>
+        {% endfor %}
+{% endblock %}
